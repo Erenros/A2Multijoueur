@@ -1,0 +1,26 @@
+{
+    "projects": {
+        "Client": {
+            "dependencies": [],
+            "dependents": [],
+            "guid": "461A24A3-0BEE-3907-05BD-6CCB34857958",
+            "lib": false,
+            "pch": true,
+            "vcpkg": true,
+            "window": false
+        },
+        "Serveur": {
+            "dependencies": [],
+            "dependents": [],
+            "guid": "0A5D1380-6090-1AE3-3693-35F769220188",
+            "lib": false,
+            "pch": true,
+            "vcpkg": true,
+            "window": false
+        }
+    },
+    "solution_guid": "45946B36-5EDF-2B23-11CB-77E7420B4E2A",
+    "solution_name": "lyo-t2-amiga-p6-06",
+    "startup_project": "Serveur",
+    "version": "1.17.3"
+}
