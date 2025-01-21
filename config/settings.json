@@ -3,7 +3,7 @@
         "Client": {
             "dependencies": [],
             "dependents": [],
-            "guid": "461A24A3-0BEE-3907-05BD-6CCB34857958",
+            "guid": "05361ECD-2DCF-7DA6-26F9-7226461F48E9",
             "lib": false,
             "pch": true,
             "vcpkg": true,
@@ -12,15 +12,15 @@
         "Serveur": {
             "dependencies": [],
             "dependents": [],
-            "guid": "0A5D1380-6090-1AE3-3693-35F769220188",
+            "guid": "084166F9-7C94-09EE-0D11-0101705C3739",
             "lib": false,
             "pch": true,
             "vcpkg": true,
             "window": false
         }
     },
-    "solution_guid": "45946B36-5EDF-2B23-11CB-77E7420B4E2A",
-    "solution_name": "lyo-t2-amiga-p6-06",
-    "startup_project": "Serveur",
+    "solution_guid": "06BD62A5-0C87-5840-5266-5FB0498F07F2",
+    "solution_name": "SolutionProj6",
+    "startup_project": "Client",
     "version": "1.17.3"
 }
