@@ -25,5 +25,7 @@ public:
 
 	Vector2 GetConstPosition() const;
 	Vector2 GetConstSize() const;
+
+	void SpawnEntity(Vector2 _Position);
 };
 #endif

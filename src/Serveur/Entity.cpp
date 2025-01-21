@@ -4,6 +4,7 @@
 Entity::Entity() :Position(Vector2()), Speed(0.0f), Size(Vector2())
 {
 }
+
 void Entity::SetPosition(Vector2 Position) {
     this->Position = Position;
 }
@@ -34,4 +35,8 @@ Vector2 Entity::GetConstPosition() const {
 
 Vector2 Entity::GetConstSize() const {
     return Size;
+}
+
+void Entity::SpawnEntity(Vector2 _Position)
+{
 }
