@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Entity.h"
 
-Entity::Entity()
+Entity::Entity() :Position(Vector2()), Speed(0.0f), Size(Vector2())
 {
 }
 void Entity::SetPosition(Vector2 Position) {

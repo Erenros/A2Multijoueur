@@ -6,12 +6,14 @@
 class Entity
 {
 protected:
+
 	Vector2 Position;
 	float Speed;
 	Vector2 Size;
 
 public:
 	Entity();
+
 	void SetPosition(Vector2 _Position);
 	Vector2 GetPosition();
 
