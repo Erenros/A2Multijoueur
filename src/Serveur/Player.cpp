@@ -14,11 +14,7 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
 {
 
     InputPlayer = _InputPlayer;
-
-    /*SpritePlayer->GetSprite().setScale(
-        _Size.GetX() / SpritePlayer->GetTexture().getSize().x,
-        _Size.GetY() / SpritePlayer->GetTexture().getSize().y
-    );*/
+    this->SpritePlayer = _Sprite;
 
     if (!Data) {
         Data = new int(Hp);
@@ -28,6 +24,11 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
     SetSize(_Size);
     SetPosition(_Position);
     SetSpeed(_Speed);
+
+    SpritePlayer->GetSprite().setScale(
+        _Size.GetX() / SpritePlayer->GetTexture().getSize().x,
+        _Size.GetY() / SpritePlayer->GetTexture().getSize().y
+    );
 }
 
 void Player::Uninit()

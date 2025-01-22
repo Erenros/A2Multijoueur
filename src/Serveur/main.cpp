@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "Vector2.h"
 #include <iostream>
+#include <filesystem> // Pour gérer les chemins dynamiquement
 
 int main() {
     // Dimensions de la fenêtre
@@ -26,12 +27,28 @@ int main() {
     // Création et initialisation du sprite pour le joueur
     SpriteClass playerSprite;
 
+    // Définir le chemin relatif dynamiquement
+    std::string basePath = std::filesystem::current_path().parent_path().parent_path().string();
+    std::string texturePath = basePath + "/sprite/Soldier.png";
+
+    // Charger la texture pour le sprite
+    sf::Texture texture;
+    if (!texture.loadFromFile(texturePath)) {
+        std::cout << "Erreur : Impossible de charger l'image '" << texturePath << "' !" << std::endl;
+        return -1; // Arrêter l'exécution en cas d'erreur
+    }
+
+    std::cout << "Texture chargée depuis : " << texturePath << std::endl;
+
+    // Appliquer la texture au sprite
+    playerSprite.GetSprite().setTexture(texture);
+
     // Création et initialisation du joueur
     Player player;
 
     // Crée un objet Vector2 avec le constructeur vide et initialisation après création
     Vector2 size;
-    size.Init(50.0f, 50.0f);  // Taille du joueur
+    size.Init(10.0f, 10.0f);  // Taille du joueur
     Vector2 position;
     position.Init(375.0f, 550.0f);  // Position initiale du joueur
 
@@ -55,20 +72,10 @@ int main() {
         // Dessiner la scène
         window.clear();  // Effacer l'écran
 
-        // Si le sprite n'est pas initialisé, afficher un rectangle
-        if (player.GetSprite() == nullptr) {
-            // Créer un rectangle pour représenter le joueur
-            sf::RectangleShape rectangle(sf::Vector2f(size.GetX(), size.GetY()));
-            rectangle.setFillColor(sf::Color::Green);  // Remplacer par la couleur de votre choix
-            rectangle.setPosition(player.GetPosition().GetX(), player.GetPosition().GetY());
-            window.draw(rectangle);
-        }
-        else {
-            // Affichage du sprite si il est correctement initialisé
-            sf::Sprite& sprite = player.GetSprite()->GetSprite();
-            sprite.setPosition(player.GetPosition().GetX(), player.GetPosition().GetY());
-            window.draw(sprite);
-        }
+        // Dessiner le sprite avec la texture chargée
+        sf::Sprite& sprite = player.GetSprite()->GetSprite();
+        sprite.setPosition(player.GetPosition().GetX(), player.GetPosition().GetY());
+        window.draw(sprite);
 
         window.display();  // Afficher la scène à l'écran
     }
