@@ -51,6 +51,12 @@ int Player::GetHp()
     return Hp;
 }
 
-Player::~Player() {
-    Uninit();
+void Player::SetSprite(SpriteClass* _Sprite)
+{
+    SpritePlayer = _Sprite;
+}
+
+SpriteClass* Player::GetSprite()
+{
+    return SpritePlayer;
 }

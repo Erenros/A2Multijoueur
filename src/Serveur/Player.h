@@ -3,13 +3,13 @@
 
 #include "Vector2.h"
 #include "Entity.h"
-//#include "Sprite.h"
+#include "Sprite.h"
 
 class Player : public Entity
 
 {
 protected:
-	//SpriteClass* SpritePlayer;
+	SpriteClass* SpritePlayer;
 
 	int Hp;
 	int* Data;
@@ -31,8 +31,8 @@ public:
 
 	int GetHp();
 
-	/*void SetSprite(SpriteClass* _Sprite);
-	SpriteClass* GetSprite();*/
+	void SetSprite(SpriteClass* _Sprite);
+	SpriteClass* GetSprite();
 
 };
 
