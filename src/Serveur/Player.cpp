@@ -25,10 +25,10 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
     SetPosition(_Position);
     SetSpeed(_Speed);
 
-    SpritePlayer->GetSprite().setScale(
+    /*SpritePlayer->GetSprite().setScale(
         _Size.GetX() / SpritePlayer->GetTexture().getSize().x,
         _Size.GetY() / SpritePlayer->GetTexture().getSize().y
-    );
+    );*/
 }
 
 void Player::Uninit()
