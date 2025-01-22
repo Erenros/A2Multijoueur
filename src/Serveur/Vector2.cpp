@@ -5,6 +5,12 @@ Vector2::Vector2() : x(0.0f), y(0.0f)
 {
 }
 
+void Vector2::Init(float _x, float _y)
+{
+    this->x = _x;
+    this->y = _y;
+}
+
 float Vector2::GetX() const
 {
 	return this->x;
@@ -41,7 +47,7 @@ Vector2& Vector2::Add(const Vector2& _other) {
     return *this;
 }
 
-Vector2& Vector2::Multiplay(const Vector2& _other) {
+Vector2& Vector2::Multiply(const Vector2& _other) {
     this->x *= _other.x;
     this->y *= _other.y;
     return *this;

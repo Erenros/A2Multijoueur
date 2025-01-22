@@ -4,12 +4,14 @@
 #include "Vector2.h"
 #include "Entity.h"
 #include "Sprite.h"
+#include "InputManager.h"
 
 class Player : public Entity
 
 {
 protected:
 	SpriteClass* SpritePlayer;
+	InputManager* InputPlayer;
 
 	int Hp;
 	int* Data;
@@ -23,7 +25,7 @@ public:
 	Player();
 	~Player();
 
-	void Init();
+	void Init(SpriteClass* _Sprite,	InputManager* _InputPlayer, const Vector2& _Size, const Vector2& _Position, float _Speed, int _Hp);
 	void Uninit();
 
 	void Move(float _WindowWidth, float _WindowHeight);

@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player() : Hp(6), Data(nullptr)
+Player::Player() : SpritePlayer(nullptr), Hp(6), Data(nullptr), Speed(20.0f), Size(Vector2()), Position(Vector2()), InputPlayer(nullptr)
 {
 }
 
@@ -10,16 +10,24 @@ Player::~Player()
 {
 }
 
-void Player::Init()
+void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector2& _Size, const Vector2& _Position, float _Speed, int _Hp)
 {
+
+    InputPlayer = _InputPlayer;
+
+    /*SpritePlayer->GetSprite().setScale(
+        _Size.GetX() / SpritePlayer->GetTexture().getSize().x,
+        _Size.GetY() / SpritePlayer->GetTexture().getSize().y
+    );*/
+
     if (!Data) {
         Data = new int(Hp);
         std::cout << "Resource reinitialized with value: " << *Data << "\n";
     }
 
-    SetSize(Size);
-    SetPosition(Position);
-    SetSpeed(Speed);
+    SetSize(_Size);
+    SetPosition(_Position);
+    SetSpeed(_Speed);
 }
 
 void Player::Uninit()
@@ -36,6 +44,24 @@ void Player::Move(float _WindowWidth, float _WindowHeight)
     float PlayerSpeed = this->GetSpeed();
     Vector2 CurrentPosition = this->GetPosition();
     Vector2 PlayerSize = this->GetSize();
+
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) && CurrentPosition.GetX() > 0) {
+        CurrentPosition.SetX(CurrentPosition.GetX() - PlayerSpeed);
+    }
+
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && CurrentPosition.GetX() + PlayerSize.GetX() < _WindowWidth) {
+        CurrentPosition.SetX(CurrentPosition.GetX() + PlayerSpeed);
+    }
+
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && CurrentPosition.GetY() > 0) {
+        CurrentPosition.SetY(CurrentPosition.GetY() - PlayerSpeed);
+    }
+
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && CurrentPosition.GetY() + PlayerSize.GetY() < _WindowHeight) {
+        CurrentPosition.SetY(CurrentPosition.GetY() + PlayerSpeed);
+    }
+
+    this->SetPosition(CurrentPosition);
 }
 
 void Player::TakeDammage(int _Dmg)

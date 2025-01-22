@@ -3,13 +3,17 @@
 #include <iostream>
 
 // Initialise la classe Sprite avec le chemin de l'image du sprite et charge l'image
-SpriteClass::SpriteClass() :SpritePath("")
+SpriteClass::SpriteClass() :SpritePath(""), Data(nullptr)
 {
 }
 
 void SpriteClass::Init(const std::string _SpritePath)
 {
     SpritePath = _SpritePath;
+    if (!Data) {
+        Data = new std::string(_SpritePath);
+        std::cout << "Resource initialized with value: " << *Data << std::endl;
+    }
     if (!LoadImage(_SpritePath)) {
         std::cerr << "Erreur : Impossible d'initialiser le sprite avec '" << _SpritePath << "'" << std::endl;
     }
@@ -17,6 +21,11 @@ void SpriteClass::Init(const std::string _SpritePath)
 
 void SpriteClass::Uninit()
 {
+    if (Data) {
+        std::cout << "Resource uninitialized, value was: " << *Data << std::endl;
+        delete Data;
+        Data = nullptr;
+    }
 }
 
 bool SpriteClass::LoadImage(std::string _SpritePath)

@@ -12,6 +12,8 @@ protected:
 	sf::Sprite SpriteS;
 	std::string SpritePath;
 
+	std::string* Data;
+
 public:
 
 	SpriteClass();
