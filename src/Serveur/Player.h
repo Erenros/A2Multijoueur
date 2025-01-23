@@ -10,15 +10,15 @@ class Player : public Entity
 
 {
 protected:
-	SpriteClass* SpritePlayer;
-	InputManager* InputPlayer;
+	SpriteClass* pSpritePlayer;
+	InputManager* pInputPlayer;
 
-	int Hp;
-	int* Data;
-	float Speed;
+	int mHp;
+	int* pData;
+	float mSpeed;
 
-	const Vector2 Size;
-	const Vector2 Position;
+	const Vector2 mSize;
+	const Vector2 mPosition;
 
 
 public:

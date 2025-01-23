@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player() : SpritePlayer(nullptr), Hp(6), Data(nullptr), Speed(20.0f), Size(Vector2()), Position(Vector2()), InputPlayer(nullptr)
+Player::Player() : pSpritePlayer(nullptr), mHp(6), pData(nullptr), mSpeed(20.0f), mSize(Vector2()), mPosition(Vector2()), pInputPlayer(nullptr)
 {
 }
 
@@ -13,12 +13,12 @@ Player::~Player()
 void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector2& _Size, const Vector2& _Position, float _Speed, int _Hp)
 {
 
-    InputPlayer = _InputPlayer;
-    this->SpritePlayer = _Sprite;
+    pInputPlayer = _InputPlayer;
+    this->pSpritePlayer = _Sprite;
 
-    if (!Data) {
-        Data = new int(Hp);
-        std::cout << "Resource reinitialized with value: " << *Data << "\n";
+    if (!pData) {
+        pData = new int(mHp);
+        std::cout << "Resource reinitialized with value: " << *pData << "\n";
     }
 
     SetSize(_Size);
@@ -33,10 +33,10 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
 
 void Player::Uninit()
 {
-    if (Data) {
-        std::cout << "Resource uninitialized, value was: " << *Data << "\n";
-        delete Data;
-        Data = nullptr;
+    if (pData) {
+        std::cout << "Resource uninitialized, value was: " << *pData << "\n";
+        delete pData;
+        pData = nullptr;
     }
 }
 
@@ -67,23 +67,23 @@ void Player::Move(float _WindowWidth, float _WindowHeight)
 
 void Player::TakeDammage(int _Dmg)
 {
-    Hp -= _Dmg;
-    if (Hp < 0) {
-        Hp = 0;
+    mHp -= _Dmg;
+    if (mHp < 0) {
+        mHp = 0;
     }
 }
 
 int Player::GetHp()
 {
-    return Hp;
+    return mHp;
 }
 
 void Player::SetSprite(SpriteClass* _Sprite)
 {
-    SpritePlayer = _Sprite;
+    pSpritePlayer = _Sprite;
 }
 
 SpriteClass* Player::GetSprite()
 {
-    return SpritePlayer;
+    return pSpritePlayer;
 }

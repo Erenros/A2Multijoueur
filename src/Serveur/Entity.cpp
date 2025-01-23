@@ -1,40 +1,40 @@
 #include "pch.h"
 #include "Entity.h"
 
-Entity::Entity() :Position(Vector2()), Speed(0.0f), Size(Vector2())
+Entity::Entity() :mPosition(Vector2()), mSpeed(0.0f), mSize(Vector2())
 {
 }
 
 void Entity::SetPosition(Vector2 Position) {
-    this->Position = Position;
+    this->mPosition = Position;
 }
 
 Vector2 Entity::GetPosition() {
-    return this->Position;
+    return this->mPosition;
 }
 
 void Entity::SetSpeed(float Speed) {
-    this->Speed = Speed;
+    this->mSpeed = Speed;
 }
 
 float Entity::GetSpeed() {
-    return this->Speed;
+    return this->mSpeed;
 }
 
 void Entity::SetSize(Vector2 Size) {
-    this->Size = Size;
+    this->mSize = Size;
 }
 
 Vector2 Entity::GetSize() {
-    return this->Size;
+    return this->mSize;
 }
 
 Vector2 Entity::GetConstPosition() const {
-    return Position;
+    return mPosition;
 }
 
 Vector2 Entity::GetConstSize() const {
-    return Size;
+    return mSize;
 }
 
 void Entity::SpawnEntity(Vector2 _Position)

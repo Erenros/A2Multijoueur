@@ -10,8 +10,8 @@ Window::~Window()
 }
 
 void Window::Init(int _width, int _height, const std::string& title) {
-    m_window.create(sf::VideoMode(_width, _height), title);
-    if (!m_window.isOpen()) {
+    mwindow.create(sf::VideoMode(_width, _height), title);
+    if (!mwindow.isOpen()) {
         std::cerr << "Erreur de création de la fenêtre!" << std::endl;
     }
 }
@@ -49,6 +49,6 @@ int Window::Get_FinalScore() {
 }
 
 sf::RenderWindow& Window::getRenderWindow() {
-    return m_window;
+    return mwindow;
 }
 

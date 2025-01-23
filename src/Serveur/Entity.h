@@ -7,9 +7,9 @@ class Entity
 {
 protected:
 
-	Vector2 Position;
-	float Speed;
-	Vector2 Size;
+	Vector2 mPosition;
+	float mSpeed;
+	Vector2 mSize;
 
 public:
 	Entity();

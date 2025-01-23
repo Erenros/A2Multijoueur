@@ -17,21 +17,21 @@ public:
 
 protected:
 
-    std::map<int, Player*> player;
+    std::map<int, Player*> pPlayer;
 
 
-    SpriteClass SpriteBackground;
-    sf::RectangleShape fadeOverlay;
+    SpriteClass mSpriteBackground;
+    sf::RectangleShape mFadeOverlay;
 
-    Vector2 SizeObstacle;
+    Vector2 mSizeObstacle;
 
-    sf::Font font;
+    sf::Font mFont;
 
-    sf::Text ScoreText;      // Texte pour afficher le score
+    sf::Text mScoreText;      // Texte pour afficher le score
 
-    int WindowHeight, WindowWidth;
-    int numObstacle;
-    int maxBrickHP;
+    int mWindowHeight, mWindowWidth;
+    int mNumObstacle;
+    int nMaxBrickHP;
 
 private:
     

@@ -3,16 +3,16 @@
 #include <iostream>
 
 // Initialise la classe Sprite avec le chemin de l'image du sprite et charge l'image
-SpriteClass::SpriteClass() :SpritePath(""), Data(nullptr)
+SpriteClass::SpriteClass() :mSpritePath(""), pData(nullptr)
 {
 }
 
 void SpriteClass::Init(const std::string _SpritePath)
 {
-    SpritePath = _SpritePath;
-    if (!Data) {
-        Data = new std::string(_SpritePath);
-        std::cout << "Resource initialized with value: " << *Data << std::endl;
+    mSpritePath = _SpritePath;
+    if (!pData) {
+        pData = new std::string(_SpritePath);
+        std::cout << "Resource initialized with value: " << *pData << std::endl;
     }
     if (!LoadImage(_SpritePath)) {
         std::cerr << "Erreur : Impossible d'initialiser le sprite avec '" << _SpritePath << "'" << std::endl;
@@ -21,19 +21,19 @@ void SpriteClass::Init(const std::string _SpritePath)
 
 void SpriteClass::Uninit()
 {
-    if (Data) {
-        std::cout << "Resource uninitialized, value was: " << *Data << std::endl;
-        delete Data;
-        Data = nullptr;
+    if (pData) {
+        std::cout << "Resource uninitialized, value was: " << *pData << std::endl;
+        delete pData;
+        pData = nullptr;
     }
 }
 
 bool SpriteClass::LoadImage(std::string _SpritePath)
 {
     // Tente de charger l'image et applique la texture au sprite si reussi
-    if (TextureSprite.loadFromFile(SpritePath))
+    if (mTextureSprite.loadFromFile(mSpritePath))
     {
-        SpriteS.setTexture(TextureSprite); // Applique la texture au sprite
+        mSpriteS.setTexture(mTextureSprite); // Applique la texture au sprite
         return true;
     }
     else {
@@ -44,13 +44,13 @@ bool SpriteClass::LoadImage(std::string _SpritePath)
 
 const sf::Texture& SpriteClass::GetTexture()
 {
-    return TextureSprite;
+    return mTextureSprite;
 }
 
 sf::Sprite& SpriteClass::GetSprite() {
-    return SpriteS;
+    return mSpriteS;
 }
 
 void SpriteClass::SetSprite(sf::Sprite _NewSprite) {
-    SpriteS = _NewSprite;
+    mSpriteS = _NewSprite;
 }

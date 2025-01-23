@@ -8,11 +8,11 @@ class SpriteClass
 {
 protected:
 
-	sf::Texture TextureSprite;
-	sf::Sprite SpriteS;
-	std::string SpritePath;
+	sf::Texture mTextureSprite;
+	sf::Sprite mSpriteS;
+	std::string mSpritePath;
 
-	std::string* Data;
+	std::string* pData;
 
 public:
 

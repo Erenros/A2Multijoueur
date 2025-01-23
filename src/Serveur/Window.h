@@ -22,7 +22,7 @@ public:
     sf::RenderWindow& getRenderWindow();           // Accède à l'objet SFML RenderWindow
 
 private:
-    sf::RenderWindow m_window;                     // Objet SFML pour la gestion de la fenêtre
+    sf::RenderWindow mwindow;                     // Objet SFML pour la gestion de la fenêtre
 };
 
 #endif
