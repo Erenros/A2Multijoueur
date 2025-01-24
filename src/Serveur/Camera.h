@@ -1,13 +1,13 @@
-#ifndef MAP_H__
-#define MAP_H__
+#ifndef CAMERA_H__
+#define CAMERA_H__
 
 #include "Window.h"
 
-class Map {
+class Camera {
 public:
 
-    Map();
-    ~Map();
+    Camera();
+    ~Camera();
 
     void CreateObstacles(int _numObstacle);
     void SetView(const sf::Vector2f& position, const sf::Vector2f& size);

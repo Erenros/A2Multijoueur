@@ -17,7 +17,6 @@ public:
     float GetY() const;
     void SetX(float _x);
     void SetY(float _y);
-    void SpawnEntity(float _x, float _y);
 
     Vector2& Subtract(const Vector2& _other);
     Vector2& Add(const Vector2& _other);

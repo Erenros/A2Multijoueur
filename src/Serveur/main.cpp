@@ -69,6 +69,7 @@ int main() {
 
     // Création de la fenêtre
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test Player");
+    window.setFramerateLimit(60);
 
     // Vérification si la fenêtre est bien ouverte
     if (!window.isOpen()) {
@@ -107,7 +108,7 @@ int main() {
     Vector2 position;
     position.Init(375.0f, 550.0f);  // Position initiale du joueur
 
-    player.Init(&playerSprite, &inputManager, size, position, 0.10f, 100);
+    player.Init(&playerSprite, &inputManager, size, position, 10.10f, 100);
 
     // Boucle principale
     while (window.isOpen()) {

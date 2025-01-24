@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "Map.h"
+#include "Camera.h"
 
-Map::Map() {
+Camera::Camera() {
     // Initialisation si nécessaire
 }
 
-Map::~Map() {
+Camera::~Camera() {
     // Libérer les ressources si nécessaire
 }
 
-void Map::CreateObstacles(int _numObstacle) {
+void Camera::CreateObstacles(int _numObstacle) {
     // Créer des obstacles sur la carte
 }
 
-void Map::SetView(const sf::Vector2f& position, const sf::Vector2f& size) {
+void Camera::SetView(const sf::Vector2f& position, const sf::Vector2f& size) {
     // Définir la vue pour afficher une portion de la carte
     m_view.setCenter(position);
     m_view.setSize(size);

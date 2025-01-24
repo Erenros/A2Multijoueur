@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player() : pSpritePlayer(nullptr), mHp(6), pData(nullptr), mSpeed(20.0f), mSize(Vector2()), mPosition(Vector2()), pInputPlayer(nullptr)
+Player::Player() : pSpritePlayer(nullptr), pData(nullptr), mSpeed(20.0f), mSize(Vector2()), mPosition(Vector2()), pInputPlayer(nullptr)
 {
 }
 
@@ -17,7 +17,6 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
     this->pSpritePlayer = _Sprite;
 
     if (!pData) {
-        pData = new int(mHp);
         std::cout << "Resource reinitialized with value: " << *pData << "\n";
     }
 
@@ -63,19 +62,6 @@ void Player::Move(float _WindowWidth, float _WindowHeight)
     }
 
     this->SetPosition(CurrentPosition);
-}
-
-void Player::TakeDammage(int _Dmg)
-{
-    mHp -= _Dmg;
-    if (mHp < 0) {
-        mHp = 0;
-    }
-}
-
-int Player::GetHp()
-{
-    return mHp;
 }
 
 void Player::SetSprite(SpriteClass* _Sprite)

@@ -5,14 +5,19 @@
 
 class Entity
 {
+
 protected:
 
 	Vector2 mPosition;
 	float mSpeed;
 	Vector2 mSize;
+	int mCollisionType;
+
+	virtual void OnCollision(Entity* collidedWith) {};
 
 public:
 	Entity();
+	~Entity();
 
 	void SetPosition(Vector2 _Position);
 	Vector2 GetPosition();
@@ -27,5 +32,12 @@ public:
 	Vector2 GetConstSize() const;
 
 	void SpawnEntity(Vector2 _Position);
+
+	enum collision {
+		Circle,
+		Square,
+	};
+
+	bool CollisionAABB(Entity* other) const;
 };
 #endif

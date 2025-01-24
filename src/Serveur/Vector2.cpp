@@ -31,9 +31,6 @@ void Vector2::SetY(float _y)
 	this->y = _y;
 }
 
-void Vector2::SpawnEntity(float _x, float _y)
-{
-}
 
 Vector2& Vector2::Subtract(const Vector2& _other) {
     this->x -= _other.x;

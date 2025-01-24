@@ -1,6 +1,10 @@
 #ifndef NETWORK_H__
 #define NETWORK_H__
 
+#include <WinSock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "Ws2_32.lib")
+
 #include "Thread.h"
 #include "CriticalSection.h"
 

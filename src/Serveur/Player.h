@@ -3,6 +3,7 @@
 
 #include "Vector2.h"
 #include "Entity.h"
+#include "LifeManager.h"
 #include "Sprite.h"
 #include "InputManager.h"
 
@@ -13,13 +14,11 @@ protected:
 	SpriteClass* pSpritePlayer;
 	InputManager* pInputPlayer;
 
-	int mHp;
 	int* pData;
 	float mSpeed;
 
 	const Vector2 mSize;
 	const Vector2 mPosition;
-
 
 public:
 	Player();
@@ -29,9 +28,6 @@ public:
 	void Uninit();
 
 	void Move(float _WindowWidth, float _WindowHeight);
-	void TakeDammage(int _Dmg);
-
-	int GetHp();
 
 	void SetSprite(SpriteClass* _Sprite);
 	SpriteClass* GetSprite();
