@@ -15,6 +15,7 @@ public:
 
 	virtual void TakeDamage(int _Dmg);
 	virtual int GetHp();
+	virtual void SetHp(int _Hp);
 
 };
 #endif

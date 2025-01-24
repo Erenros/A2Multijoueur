@@ -24,6 +24,8 @@ int Obstacle::Init(SpriteClass* _Sprite, const Vector2 _Size, const Vector2 _Pos
         _Size.GetX() / SpritePlayer->GetTexture().getSize().x,
         _Size.GetY() / SpritePlayer->GetTexture().getSize().y
     );*/
+
+    return *pData;
 }
 
 void Obstacle::SetSprite(SpriteClass* _Sprite)

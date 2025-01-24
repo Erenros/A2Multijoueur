@@ -1,4 +1,4 @@
-//#include "pch.h"
+#include "pch.h"
 //#include "Collider.h"
 //
 //bool Collider::CollisionAABB(Entity* other) const {

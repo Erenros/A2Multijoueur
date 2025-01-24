@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Timer.h"
+#pragma comment(lib, "Winmm.lib")
 
 bool Timer::UpdateTime()
 {

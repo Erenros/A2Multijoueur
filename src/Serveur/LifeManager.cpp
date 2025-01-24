@@ -20,3 +20,8 @@ void LifeManager::TakeDamage(int _Dmg) {
 int LifeManager::GetHp() {
     return mHp;
 }
+
+void LifeManager::SetHp(int _Hp)
+{
+    this->mHp = _Hp;
+}
