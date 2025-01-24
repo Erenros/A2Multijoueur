@@ -21,6 +21,10 @@ void ScoreManager::AddKill()
 void ScoreManager::AddDeath()
 {
 	mScore -= 1;
+	if (mScore < 0)
+	{
+		mScore = 0;
+	}
 }
 
 int ScoreManager::GetScore()

@@ -17,7 +17,7 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
     this->pSpritePlayer = _Sprite;
 
     if (!pData) {
-        std::cout << "Resource reinitialized with value: " << *pData << "\n";
+        std::cout << "Resource reinitialized with value: " << "\n";
     }
 
     SetSize(_Size);
