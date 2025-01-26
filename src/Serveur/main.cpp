@@ -53,21 +53,13 @@
 //
 //    return 0;
 //}
-#include "pch.h"
-#include <SFML/Graphics.hpp>
-#include "Player.h"
-#include "Obstacle.h"
-#include "Sprite.h"
-#include "InputManager.h"
-#include "Vector2.h"
-#include <iostream>
-#include <filesystem> // Pour gérer les chemins dynamiquement
 
 #include "pch.h"
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Obstacle.h"
 #include "Sprite.h"
+#include "Map.h"
 #include "InputManager.h"
 #include "Vector2.h"
 #include <iostream>
@@ -80,7 +72,7 @@ int main() {
     const float windowWidth = 1260.0f;
     const float windowHeight = 800.0f;
 
-    // Création de la fenêtre
+    // Création de la fenêtre principale
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test Player");
     window.setFramerateLimit(60);
 
@@ -157,6 +149,9 @@ int main() {
     //  -------------------------------------   GAME LOOP   -------------------------------------
 
     // Boucle principale
+    Map map;
+    map.Init(1260, 800, "Game Map");
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -178,20 +173,25 @@ int main() {
             player.SetPosition(previousPosition);
         }
 
+        // Mettre à jour la caméra pour suivre le joueur
+        map.UpdateCamera(sf::Vector2f(player.GetPosition().GetX(), player.GetPosition().GetY()), windowWidth, windowHeight);
+
         // Dessiner la scène
         window.clear();  // Effacer l'écran
 
-        // Dessiner le sprite du joueur avec la texture chargée
+        // Dessiner les objets principaux dans la fenêtre principale
         sf::Sprite& sprite = player.GetSprite()->GetSprite();
         sprite.setPosition(player.GetPosition().GetX(), player.GetPosition().GetY());
         window.draw(sprite);
 
-        // Dessiner l'obstacle avec sa texture
         sf::Sprite obstacleSfSprite = obstacle.GetSfSprite();
         obstacleSfSprite.setPosition(positionObstacle.GetX(), positionObstacle.GetY());
         window.draw(obstacleSfSprite);
 
-        window.display();  // Afficher la scène à l'écran
+        window.display();  // Afficher la scène principale
+
+        // Dessiner la carte dans la fenêtre dédiée à la carte
+        map.Draw(window);
     }
 
     //  -------------------------------------   UNINIT   -------------------------------------
