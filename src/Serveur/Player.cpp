@@ -16,6 +16,11 @@ void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector
     pInputPlayer = _InputPlayer;
     this->pSpritePlayer = _Sprite;
 
+    sf::Vector2u textureSize = pSpritePlayer->GetSprite().getTexture()->getSize();
+    Vector2 size;
+    size.Init(static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
+    SetSize(size);
+
     if (!pData) {
         std::cout << "Resource reinitialized with value: " << "\n";
     }

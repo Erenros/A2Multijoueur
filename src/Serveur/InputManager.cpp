@@ -1,51 +1,71 @@
 #include "pch.h"
 #include "InputManager.h"
 
-InputManager::InputManager()
-{
+InputManager::InputManager() {
+    // Initialisation des touches A-Z
+    for (char c = 'A'; c <= 'Z'; ++c) {
+        keyStates[c] = None;  // Initialiser l'état de chaque touche à "None"
+    }
+
+    // Initialisation des boutons de la souris (clic gauche et droit)
+    mouseStates[VK_LBUTTON] = None;  // Clic gauche
+    mouseStates[VK_RBUTTON] = None;  // Clic droit
 }
 
-InputManager::~InputManager() {}
+void InputManager::update() {
+    // Mettre à jour les états des touches
+    for (auto it = keyStates.begin(); it != keyStates.end(); ++it) {
+        int key = it->first;        // Clé (code de la touche)
+        KeyState& state = it->second;  // État de la touche
 
-void InputManager::HandleEvent(const sf::Event& event) {
-    switch (event.type) {
-    case sf::Event::KeyPressed:
-        bKeyStates[event.key.code] = true;
-        break;
+        SHORT keyState = GetAsyncKeyState(key);
 
-    case sf::Event::KeyReleased:
-        bKeyStates[event.key.code] = false;
-        break;
+        if (keyState & 0x8000) { // Touche enfoncée
+            if (state == None || state == Up)
+                state = Push;
+            else
+                state = Down;
+        }
+        else { // Touche relâchée
+            if (state == Down || state == Push)
+                state = Up;
+            else
+                state = None;
+        }
+    }
 
-    case sf::Event::MouseButtonPressed:
-        bMouseStates[event.mouseButton.button] = true;
-        break;
+    // Mettre à jour l'état des boutons de la souris (clic gauche et droit)
+    for (auto it = mouseStates.begin(); it != mouseStates.end(); ++it) {
+        int button = it->first;
+        KeyState& state = it->second;
 
-    case sf::Event::MouseButtonReleased:
-        bMouseStates[event.mouseButton.button] = false;
-        break;
+        SHORT buttonState = GetAsyncKeyState(button);
 
-    default:
-        break;
+        if (buttonState & 0x8000) { // Bouton enfoncé
+            if (state == None || state == Up)
+                state = Push;
+            else
+                state = Down;
+        }
+        else { // Bouton relâché
+            if (state == Down || state == Push)
+                state = Up;
+            else
+                state = None;
+        }
     }
 }
 
-bool InputManager::IsKeyPressed(sf::Keyboard::Key key) const {
-    auto it = bKeyStates.find(key);
-    if (it != bKeyStates.end()) {
+KeyState InputManager::getKeyState(int key) const {
+    auto it = keyStates.find(key);
+    if (it != keyStates.end())
         return it->second;
-    }
-    return false;
+    return None;
 }
 
-bool InputManager::IsMouseButtonPressed(sf::Mouse::Button button) const {
-    auto it = bMouseStates.find(button);
-    if (it != bMouseStates.end()) {
+KeyState InputManager::getMouseState(int button) const {
+    auto it = mouseStates.find(button);
+    if (it != mouseStates.end())
         return it->second;
-    }
-    return false;
-}
-
-sf::Vector2i InputManager::GetMousePosition(const sf::RenderWindow& window) const {
-    return sf::Mouse::getPosition(window);
+    return None;
 }

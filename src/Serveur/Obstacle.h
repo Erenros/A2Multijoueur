@@ -8,7 +8,7 @@ class Obstacle : public Entity
 {
 protected:
 
-	int* pData;
+	bool mData = false;
 	SpriteClass* mSpriteObstacle;
 
 public:

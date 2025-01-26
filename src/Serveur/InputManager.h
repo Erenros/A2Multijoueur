@@ -1,24 +1,31 @@
 #ifndef INPUTMANAGER_H__
 #define INPUTMANAGER_H__
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 #include <unordered_map>
+#include <Windows.h>
 
-class InputManager
-{
+enum KeyState {
+    None,   // Aucune action sur la touche
+    Push,   // Touche pressée (début)
+    Down,   // Touche maintenue enfoncée
+    Up      // Touche relâchée
+};
+
+class InputManager {
 private:
-    std::unordered_map<sf::Keyboard::Key, bool> bKeyStates;
-    std::unordered_map<sf::Mouse::Button, bool> bMouseStates;
-protected:
+    std::unordered_map<int, KeyState> keyStates;  // Remplacer sf::Keyboard::Key par int (VK_*)
+    std::unordered_map<int, KeyState> mouseStates; // Ajouter un map pour les boutons de la souris
 
 public:
-	InputManager();
-    ~InputManager();
+    InputManager();
 
-    void HandleEvent(const sf::Event& event);
-    bool IsKeyPressed(sf::Keyboard::Key key) const;
-    bool IsMouseButtonPressed(sf::Mouse::Button button) const;
-    sf::Vector2i GetMousePosition(const sf::RenderWindow& window) const;
+    void update();  // Mise à jour sans événement SFML, à appeler dans la boucle de jeu
+
+    // Récupère l'état d'une touche spécifique
+    KeyState getKeyState(int key) const;
+
+    // Récupère l'état d'un bouton de la souris
+    KeyState getMouseState(int button) const;
 };
+
 #endif
