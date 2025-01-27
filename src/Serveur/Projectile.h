@@ -2,24 +2,32 @@
 #define PROJECTILE_H__
 
 #include <SFML/Graphics.hpp>
+#include "Entity.h"
+#include "Sprite.h"
+#include <string>
 
-class Projectile {
-
-    int mSpeed, mDmg;
-    sf::RectangleShape mShape;
+class Projectile : public Entity
+{
+private:
+    SpriteClass* pSpriteProjectile;
+    int mDamage;
+    int mIndexDeplacement;
+    std::string mOwner;
 
 public:
-
     Projectile();
     ~Projectile();
 
-    void Init(int _Speed, int _Damage);
+    void Init(SpriteClass* _Sprite, const Vector2& _Size, const Vector2& _Position, int _IndexDepl, float _Speed, int _Damage, const std::string& _Owner);
+    void Uninit();
 
-    void Move(int _IndexDirection);
-    void Death();
-    bool CheckCollisions();
-    void CreateProjectile();
-    void Update(float Deltatime);
+    int GetDamage() const;
+    void SetDamage(int _Damage);
+
+    void SetSprite(SpriteClass* _Sprite);
+    SpriteClass* GetSprite();
+
+    void Move(float _DeltaTime);
 };
 
 #endif

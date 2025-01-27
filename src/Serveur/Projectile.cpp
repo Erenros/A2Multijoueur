@@ -1,91 +1,85 @@
 #include "pch.h"
-//#include <iostream>
-//#include <ctime>
-//#include "Projectile.h"
-//
-//Projectile::Projectile() : mSpeed(4), mDamage(1), mPosX(0), mPosY(0), mWidth(0), mHeight(0), mIsTouchingWall(false), mIsTouchingPlayer(false)
-//{
-//}
-//Projectile::~Projectile()
-//{
-//}
-//
-//
-//void Projectile::Init(int _Speed, int _Damage, int _PosX, int _PosY, int _Width, int _Height, bool _IsTouchingWall, bool _IsTouchingPlayer)
-//{
-//    this->mSpeed = _Speed;
-//    this->mDamage = _Damage;
-//    this->mPosX = _PosX;
-//    this->mPosY = _PosY;
-//    this->mWidth = _Width;
-//    this->mHeight = _Height;
-//    this->mIsTouchingPlayer = _IsTouchingPlayer;
-//    this->mIsTouchingWall = _IsTouchingWall;
-//}
-//
-//void Projectile::Move()
-//{
-//    if (Command == 'd')
-//    {
-//        this->mPosX += 1;
-//    }
-//    if (Command == 'd' && Command == 'z')
-//    {
-//        this->mPosX += 1;
-//        this->mPosY -= 1;
-//    }
-//    if (Command == 'z')
-//    {
-//        this->mPosY -= 1;
-//    }
-//    if (Command == 'q' && Command == 'z')
-//    {
-//        this->mPosX -= 1;
-//        this->mPosY -= 1;
-//    }
-//    if (Command == 'q')
-//    {
-//        this->mPosX -= 1;
-//    }
-//    if (Command == 'q' && Command == 's')
-//    {
-//        this->mPosX -= 1;
-//        this->mPosY += 1;
-//    }
-//    if (Command == 's')
-//    {
-//        this->mPosY += 1;
-//    }
-//    if (Command == 'd' && Command == 's')
-//    {
-//        this->mPosX += 1;
-//        this->mPosY += 1;
-//    }
-//}
-//
-//void Projectile::Death()
-//{
-//
-//}
-//
-//bool Projectile::CheckCollisions()
-//{
-//    if (this->mPosX + this->mWidth < Obstacle->PosX) return false;
-//    if (this->mPosY + this->mWeight < Obstacle->PosY) return false;
-//    if (this->mPosX > Obstacle->PosX + Obstacle->width) return false;
-//    if (this->mPosY > Obstacle->PosY + Obstacle->height) return false;
-//    return true;
-//}
-//
-//void Projectile::CreateProjectile()
-//{
-//    Projectile newRect(int this->mPosX, int this->mPosY, int this->mWidth, int this->mHeight) {
-//        Projectile m = { this->mPosX, this->mPoxY, this->mWidth, this->mHeight };
-//        return m;
-//    }
-//}
-//
-//void Projectile::Update(float Deltatime)
-//{
-//    if (Command == 'd') CreateProjectile();
-//}
+#include "Projectile.h"
+#include <iostream>
+
+Projectile::Projectile() : pSpriteProjectile(nullptr), mDamage(0), mIndexDeplacement(-1), mOwner("")
+{
+}
+
+Projectile::~Projectile()
+{
+}
+
+void Projectile::Init(SpriteClass* _Sprite, const Vector2& _Size, const Vector2& _Position, int _IndexDepl, float _Speed, int _Damage, const std::string& _Owner)
+{
+    this->pSpriteProjectile = _Sprite;
+
+    sf::Vector2u textureSize = pSpriteProjectile->GetSprite().getTexture()->getSize();
+    Vector2 size;
+    size.Init(static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
+    SetSize(size);
+
+    SetSize(_Size);
+    SetPosition(_Position);
+    SetSpeed(_Speed);
+
+    mIndexDeplacement = _IndexDepl;
+    mDamage = _Damage;
+    mOwner = _Owner;
+}
+
+void Projectile::Uninit()
+{
+    mDamage = 0;
+    pSpriteProjectile = nullptr;
+}
+
+int Projectile::GetDamage() const
+{
+    return mDamage;
+}
+
+void Projectile::SetDamage(int _Damage)
+{
+    mDamage = _Damage;
+}
+
+void Projectile::SetSprite(SpriteClass* _Sprite)
+{
+    pSpriteProjectile = _Sprite;
+}
+
+SpriteClass* Projectile::GetSprite()
+{
+    return pSpriteProjectile;
+}
+
+void Projectile::Move(float _DeltaTime)
+{
+    float moveSpeed = GetSpeed() * _DeltaTime;
+    Vector2 currentPosition = GetPosition();
+
+    switch (mIndexDeplacement)
+    {
+    case 0:
+        currentPosition.SetX(currentPosition.GetX() + moveSpeed);
+        break;
+    case 1:
+        currentPosition.SetX(currentPosition.GetX() - moveSpeed);
+        break;
+    case 2:
+        currentPosition.SetY(currentPosition.GetY() - moveSpeed);
+        break;
+    case 3:
+        currentPosition.SetY(currentPosition.GetY() + moveSpeed);
+        break;
+    default:
+        break;
+    }
+
+    SetPosition(currentPosition);
+
+    // Affiche la position pour le débogage
+    std::cout << "Projectile Position - X: " << currentPosition.GetX()
+        << ", Y: " << currentPosition.GetY() << std::endl;
+}

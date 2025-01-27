@@ -9,6 +9,15 @@
             "vcpkg": true,
             "window": false
         },
+        "ExternLib": {
+            "dependencies": [],
+            "dependents": [],
+            "guid": "0F162F22-79D4-0DEF-56FE-05DF4C816A77",
+            "lib": false,
+            "pch": true,
+            "vcpkg": true,
+            "window": false
+        },
         "Serveur": {
             "dependencies": [],
             "dependents": [],
