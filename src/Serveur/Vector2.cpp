@@ -22,6 +22,16 @@ float Vector2::GetY() const
 	return this->y;
 }
 
+float Vector2::GetX()
+{
+    return this->x;
+}
+
+float Vector2::GetY()
+{
+    return this->y;
+}
+
 void Vector2::SetX(float _x)
 {
 	this->x = _x;
@@ -31,7 +41,6 @@ void Vector2::SetY(float _y)
 {
 	this->y = _y;
 }
-
 
 Vector2& Vector2::Subtract(const Vector2& _other) {
     this->x -= _other.x;

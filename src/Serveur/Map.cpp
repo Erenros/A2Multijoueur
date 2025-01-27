@@ -1,52 +1,51 @@
 #include "pch.h"
 #include "Map.h"
 
-Map::Map() {}
+Map::Map() : mViewArea(0.f, 0.f, 800.f, 600.f), mPlayerPosition(400.f, 300.f) {}
 
 Map::~Map() {}
 
 void Map::Init(int _width, int _height, const std::string& title) {
-    // Pas besoin de créer une nouvelle fenêtre ici, on la gère dans `main.cpp`
-    mView.setSize(800.f, 600.f);  // Taille de la vue (caméra)
-    mView.setCenter(400.f, 300.f);  // Initialement centré sur (400, 300)
+    // Pas besoin de définir une vue, juste gérer la taille de la fenêtre dans le main
+    mViewArea.width = 800.f;  // Taille de la zone de vue
+    mViewArea.height = 600.f;
 }
 
 void Map::Draw(sf::RenderWindow& _Window) {
-    _Window.setView(mView);  // Appliquer la vue à la fenêtre principale
     _Window.clear();
-    // Dessiner ici les éléments de la map (obstacles, ennemis, etc.)
-   // _Window.display();
+
+    // Calculer la transformation nécessaire pour "afficher" la vue
+    sf::Transform transform;
+    transform.translate(-mPlayerPosition.x + mViewArea.width / 2.f, -mPlayerPosition.y + mViewArea.height / 2.f);
+
+    // Appliquer la transformation et dessiner les éléments
+    //_Window.setView(sf::View(mPlayerPosition, sf::Vector2f(mViewArea.width, mViewArea.height)));
+    // Dessiner ici les éléments de la carte (obstacles, ennemis, etc.)
+    // _Window.draw(...);
+
+    //_Window.display();
 }
 
 void Map::UpdateCamera(const sf::Vector2f& playerPosition, float width, float height) {
-    // On déplace la vue de sorte que le joueur soit toujours au centre
-    sf::Vector2f newCenter = playerPosition;
+    mPlayerPosition = playerPosition;
 
-    // S'assurer que la caméra ne sort pas de la carte
-    float mapWidth = 2000.f;  // Largeur de la carte (en pixels)
+    // Appliquer les limites de la carte (en pixels)
+    float mapWidth = 2000.f;  // Largeur de la carte
     float mapHeight = 2000.f;  // Hauteur de la carte
 
     float halfWidth = width / 2.f;
     float halfHeight = height / 2.f;
 
-    // Vérifier les limites de la carte
-    if (newCenter.x - halfWidth < 0.f)
-        newCenter.x = halfWidth;
-    if (newCenter.x + halfWidth > mapWidth)
-        newCenter.x = mapWidth - halfWidth;
+    // Ajuster la position de la caméra pour ne pas sortir des limites de la carte
+    if (mPlayerPosition.x - halfWidth < 0.f)
+        mPlayerPosition.x = halfWidth;
+    if (mPlayerPosition.x + halfWidth > mapWidth)
+        mPlayerPosition.x = mapWidth - halfWidth;
 
-    if (newCenter.y - halfHeight < 0.f)
-        newCenter.y = halfHeight;
-    if (newCenter.y + halfHeight > mapHeight)
-        newCenter.y = mapHeight - halfHeight;
-
-    // Appliquer le déplacement de la caméra
-    mView.setCenter(newCenter);
-}
-
-sf::RenderWindow& Map::getRenderWindow() {
-    // Il n'est plus nécessaire de retourner une fenêtre ici
-    throw std::logic_error("No need to access render window in Map anymore.");
+    if (mPlayerPosition.y - halfHeight < 0.f)
+        mPlayerPosition.y = halfHeight;
+    if (mPlayerPosition.y + halfHeight > mapHeight)
+        mPlayerPosition.y = mapHeight - halfHeight;
 }
 
 int Map::Get_FinalScore() {

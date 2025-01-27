@@ -1,7 +1,6 @@
 #ifndef VECTOR2_H__
 #define VECTOR2_H__
 
-
 class Vector2 {
 
     float x;
@@ -15,6 +14,8 @@ public:
 
     float GetX() const;
     float GetY() const;
+    float GetX();
+    float GetY();
     void SetX(float _x);
     void SetY(float _y);
 

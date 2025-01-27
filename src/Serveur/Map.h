@@ -17,10 +17,10 @@ public:
     void UpdateCamera(const sf::Vector2f& playerPosition, float width, float height);  // Met à jour la caméra
 
     int Get_FinalScore();
-    sf::RenderWindow& getRenderWindow();  // Accède à l'objet SFML RenderWindow
 
 private:
-    sf::View mView;  // La vue/caméra
+    sf::FloatRect mViewArea;
+    sf::Vector2f mPlayerPosition;
 };
 
 #endif
