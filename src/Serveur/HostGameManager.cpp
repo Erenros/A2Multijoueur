@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GameManager.h"
+#include "HostGameManager.h"
 
 GameManager::GameManager()
 {

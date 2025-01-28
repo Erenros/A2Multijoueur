@@ -1,8 +1,17 @@
 #include "pch.h"
-#include "main.h"
+#include "GameManager.h"
 
-int main()
-{
-    std::cout << "Hello, World!\n";
+int main() {
+    GameManager gameManager;
+
+    if (gameManager.Init() != 0) {
+        std::cerr << "Erreur lors de l'initialisation du jeu." << std::endl;
+        return -1;
+    }
+
+    gameManager.GameLoop();
+
+    gameManager.Uninit();
+
     return 0;
 }

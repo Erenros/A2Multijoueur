@@ -1,10 +1,11 @@
-#ifndef GAMAMANAGER_H__
-#define GAMAMANAGER_H__
+#ifndef HOSTGAMAMANAGER_H__
+#define HOSTGAMAMANAGER_H__
 
 #include <SFML/Graphics.hpp>
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "ExternLib.lib")
 #include "windows.h"
 #include <SFML/Network.hpp>
 

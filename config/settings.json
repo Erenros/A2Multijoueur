@@ -3,7 +3,7 @@
         "Client": {
             "dependencies": [],
             "dependents": [],
-            "guid": "05361ECD-2DCF-7DA6-26F9-7226461F48E9",
+            "guid": "31A763F2-7917-5D46-0ED2-451851F82AEC",
             "lib": false,
             "pch": true,
             "vcpkg": true,
@@ -30,6 +30,6 @@
     },
     "solution_guid": "06BD62A5-0C87-5840-5266-5FB0498F07F2",
     "solution_name": "SolutionProj6",
-    "startup_project": "Client",
+    "startup_project": "ExternLib",
     "version": "1.17.3"
 }

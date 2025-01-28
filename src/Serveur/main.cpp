@@ -434,7 +434,7 @@
 
 
 #include "pch.h"
-#include "GameManager.h"
+#include "HostGameManager.h"
 
 int main() {
     GameManager gameManager;
