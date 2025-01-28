@@ -12,8 +12,8 @@
         "ExternLib": {
             "dependencies": [],
             "dependents": [],
-            "guid": "0F162F22-79D4-0DEF-56FE-05DF4C816A77",
-            "lib": false,
+            "guid": "778601EA-4CE2-237D-5756-3A3C65E936B4",
+            "lib": true,
             "pch": true,
             "vcpkg": true,
             "window": false
