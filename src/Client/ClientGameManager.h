@@ -14,6 +14,7 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "InputManager.h"
+#include "UIManager.h"
 #include "Vector2.h"
 
 #include <iostream>
@@ -25,6 +26,9 @@ public:
     GameManager();
 
     void ParsePlayerData(const std::string& message, Player& player);
+
+    static DWORD WINAPI StaticClientThreadNetwork(void* pParam);
+    static DWORD WINAPI StaticClientThreadCommand(void* pParam);
 
     DWORD WINAPI ClientThreadNetwork(void* pParam);
     DWORD WINAPI ClientThreadCommand(void* pParam);
@@ -52,18 +56,55 @@ protected:
     std::string basePath = std::filesystem::current_path().parent_path().parent_path().string();
 
     std::string mPseudo;
+
+    std::string inputTextTop = "";
+    std::string inputTextMid = "";
+    std::string inputTextBottom = "";
+
+    // Déclaration des labels
+    sf::Text labelTop;
+    sf::Text labelMid;
+    sf::Text labelBottom;
+
+    // Déclaration des zones de saisie
+    sf::RectangleShape inputAreaTop;
+    sf::RectangleShape inputAreaMid;
+    sf::RectangleShape inputAreaBottom;
+
+    // Déclaration des zones de texte
+    sf::Text textTop;
+    sf::Text textMid;
+    sf::Text textBottom;
+
+    sf::Font font;
+
+    sf::RenderWindow window;
+
+    bool isInTopArea = false;
+    bool isInMidArea = false;
+    bool isInBottomArea = false;
+
     const float windowWidth = 1260.0f;
     const float windowHeight = 800.0f;
 
-    sf::RenderWindow window;
+    UIManager connectButton;
+
+    bool bRunning;
+    bool isConnected = false;
+
     Map mMap;
 
-    int port = 8080;
+    int port;
     WSAData wsaData;
     SOCKET socket_client;
     sockaddr_in addrServer;
+    const char* ip_Server;
 
     CRITICAL_SECTION criticalSection;
+
+    HANDLE threadNetwork;
+    HANDLE threadCommand;
+
 
     //sf::Font mFont;
     //sf::Text mScoreText;      // Texte pour afficher le score

@@ -16,11 +16,17 @@ public:
     void Draw(sf::RenderWindow& _Window);  // Dessine les éléments du niveau
     void UpdateCamera(const sf::Vector2f& playerPosition, float width, float height);  // Met à jour la caméra
 
-    int Get_FinalScore();
+    void setPosition(const Vector2& position);
+
+    void SetSprite(SpriteClass* _Sprite);
+    SpriteClass* GetSprite();
+    void Render(sf::RenderWindow& window);
 
 private:
     sf::FloatRect mViewArea;
     sf::Vector2f mPlayerPosition;
+    sf::RectangleShape mMapShape;
+    SpriteClass* mSpriteMap;
 };
 
 #endif

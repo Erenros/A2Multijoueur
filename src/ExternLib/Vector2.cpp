@@ -42,6 +42,14 @@ void Vector2::SetY(float _y)
 	this->y = _y;
 }
 
+sf::Vector2i Vector2::ToSFMLVectorI() const {
+    return sf::Vector2i(static_cast<int>(x), static_cast<int>(y));
+}
+
+sf::Vector2f Vector2::ToSFMLVectorF() const {
+    return sf::Vector2f(static_cast<float>(x), static_cast<float>(y));
+}
+
 Vector2& Vector2::Subtract(const Vector2& _other) {
     this->x -= _other.x;
     this->y -= _other.y;

@@ -48,6 +48,22 @@ void Map::UpdateCamera(const sf::Vector2f& playerPosition, float width, float he
         mPlayerPosition.y = mapHeight - halfHeight;
 }
 
-int Map::Get_FinalScore() {
-    return 0;
+void Map::setPosition(const Vector2& position)
+{
+    mMapShape.setPosition(position.ToSFMLVectorF());
+}
+
+void Map::SetSprite(SpriteClass* _Sprite)
+{
+    mSpriteMap = _Sprite;
+}
+
+SpriteClass* Map::GetSprite()
+{
+    return mSpriteMap;
+}
+
+void Map::Render(sf::RenderWindow& window)
+{
+    window.draw(mSpriteMap->GetSprite());
 }

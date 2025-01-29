@@ -1,6 +1,8 @@
 #ifndef VECTOR2_H__
 #define VECTOR2_H__
 
+#include <SFML/System/Vector2.hpp>
+
 class Vector2 {
 
     float x;
@@ -18,6 +20,9 @@ public:
     float GetY();
     void SetX(float _x);
     void SetY(float _y);
+
+    sf::Vector2i ToSFMLVectorI() const;
+    sf::Vector2f ToSFMLVectorF() const;
 
     Vector2& Subtract(const Vector2& _other);
     Vector2& Add(const Vector2& _other);

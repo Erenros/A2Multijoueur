@@ -7,7 +7,6 @@ InputManager::InputManager() {
         keyStates[c] = None;  // Initialiser l'état de chaque touche à "None"
     }
 
-    // Initialisation des boutons de la souris (clic gauche et droit)
     mouseStates[VK_LBUTTON] = None;  // Clic gauche
     mouseStates[VK_RBUTTON] = None;  // Clic droit
 }

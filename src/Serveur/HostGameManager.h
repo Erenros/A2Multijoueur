@@ -58,7 +58,7 @@ protected:
     sf::RenderWindow window;
     Map mMap;
 
-    int port = 8080;
+    int port=8080;
     WSAData wsaData;
     SOCKET server_UDP;
     sockaddr_in addr;
