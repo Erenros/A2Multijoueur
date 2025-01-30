@@ -1,13 +1,18 @@
 #include "pch.h"
 #include "ClientGameManager.h"
 
-GameManager::GameManager()
-{
+GameManager::GameManager() : bRunning(true) {
     InitializeCriticalSection(&criticalSection);
 }
 
-void GameManager::ParsePlayerData(const std::string& message, Player& player)
-{
+GameManager::~GameManager() {
+    // Attendre que les threads se terminent avant de détruire l'instance
+    if (threadNetwork) WaitForSingleObject(threadNetwork, INFINITE);
+    if (threadCommand) WaitForSingleObject(threadCommand, INFINITE);
+    DeleteCriticalSection(&criticalSection);
+}
+
+void GameManager::ParsePlayerData(const std::string& message, Player& player) {
     std::string prefix = "Initialisation Player: ";
     if (message.find(prefix) == 0) {
         auto openPos = message.find('(');
@@ -28,6 +33,8 @@ void GameManager::ParsePlayerData(const std::string& message, Player& player)
         if (ss >> mPosX >> mPosY >> mSpeed >> mSizeX >> mSizeY >> mHp) {
             mSize.Init(mSizeX, mSizeY);
             mPos.Init(mPosX, mPosY);
+
+            // Initialiser le joueur
             player.Init(&mPlayerSprite, &mInputManager, mSize, mPos, mSpeed, mHp);
 
             Vector2 mSizeMap;
@@ -44,32 +51,27 @@ void GameManager::ParsePlayerData(const std::string& message, Player& player)
     }
 }
 
-DWORD WINAPI GameManager::StaticClientThreadNetwork(void* pParam)
-{
+DWORD WINAPI GameManager::StaticClientThreadNetwork(void* pParam) {
     GameManager* gameManager = static_cast<GameManager*>(pParam);
-    return gameManager->ClientThreadNetwork(pParam);
+    return gameManager->ClientThreadNetwork();
 }
 
-DWORD WINAPI GameManager::StaticClientThreadCommand(void* pParam)
-{
+DWORD WINAPI GameManager::StaticClientThreadCommand(void* pParam) {
     GameManager* gameManager = static_cast<GameManager*>(pParam);
-    return gameManager->ClientThreadCommand(pParam);
+    return gameManager->ClientThreadCommand();
 }
 
-
-DWORD WINAPI GameManager::ClientThreadNetwork(void* pParam)
-{
-    ClientThreadParams* params = static_cast<ClientThreadParams*>(pParam);
-    bool* isRunning = params->isRunning;
-    Player* player = params->player;
-    CRITICAL_SECTION* criticalSection = params->criticalSection;
+DWORD WINAPI GameManager::ClientThreadNetwork() {
+    std::cout << "[Client] Thread réseau démarré" << std::endl;
 
     sockaddr_in from;
     socklen_t fromlen = sizeof(from);
-    char buffer[4096];
+    char buffer[4096] = { 0 };  // Initialisez le buffer à zéro
     int ret;
 
-    while (*(bool*)pParam) {
+    while (bRunning) {
+        std::cout << "[Client] En attente de réception..." << std::endl;
+
         ret = recvfrom(socket_client, buffer, sizeof(buffer) - 1, 0, (sockaddr*)&from, &fromlen);
         if (ret > 0) {
             buffer[ret] = '\0';
@@ -78,9 +80,17 @@ DWORD WINAPI GameManager::ClientThreadNetwork(void* pParam)
             std::cout << "Vous avez reçu : " << message << std::endl;
 
             if (message.find("Initialisation Player:") == 0) {
-                EnterCriticalSection(criticalSection);
-                ParsePlayerData(message, *player); // Initialiser le joueur
-                LeaveCriticalSection(criticalSection);
+                EnterCriticalSection(&criticalSection);
+
+                // Créer un nouveau joueur si nécessaire
+                if (pPlayers.find(mPseudo) == pPlayers.end()) {
+                    pPlayers[mPseudo] = new Player();
+                }
+
+                // Initialiser le joueur
+                ParsePlayerData(message, *pPlayers[mPseudo]);
+
+                LeaveCriticalSection(&criticalSection);
             }
             else if (message.find("Position: ") == 0) {
                 size_t posStart = message.find("Position: ");
@@ -101,9 +111,9 @@ DWORD WINAPI GameManager::ClientThreadNetwork(void* pParam)
                             mPlayerPos.Init(mPosX, mPosY);
 
                             // Mettre à jour la position du joueur
-                            EnterCriticalSection(criticalSection); // Protection multi-thread
-                            player->SetPosition(mPlayerPos); // Mettre à jour la position
-                            LeaveCriticalSection(criticalSection);
+                            EnterCriticalSection(&criticalSection); // Protection multi-thread
+                            pPlayers[mPseudo]->SetPosition(mPlayerPos); // Mettre à jour la position
+                            LeaveCriticalSection(&criticalSection);
 
                             std::cout << "Nouvelle position mise à jour : X=" << mPosX << ", Y=" << mPosY << std::endl;
                         }
@@ -119,15 +129,14 @@ DWORD WINAPI GameManager::ClientThreadNetwork(void* pParam)
         }
     }
 
+    std::cout << "[Client] Thread réseau terminé" << std::endl;
     return 0;
 }
 
-DWORD __stdcall GameManager::ClientThreadCommand(void* pParam)
-{
-    ClientThreadParams* params = static_cast<ClientThreadParams*>(pParam);
-    bool running = (params->isRunning);
+DWORD WINAPI GameManager::ClientThreadCommand() {
+    std::cout << "[Client] Thread commande démarré" << std::endl;
 
-    while (running) {
+    while (bRunning) {
         for (const auto& key : { 'Z', 'Q', 'S', 'D', 'I', 'J', 'K', 'L' }) {
             KeyState state = mInputManager.getKeyState(key);  // Utilisation du pointeur inputManager
 
@@ -139,32 +148,32 @@ DWORD __stdcall GameManager::ClientThreadCommand(void* pParam)
                 command += " \n Input: ";
 
                 switch (key) {
-                    case 'Z':
-                        command += "z";
-                        break;
-                    case 'Q':
-                        command += "q";
-                        break;
-                    case 'S':
-                        command += "s";
-                        break;
-                    case 'D':
-                        command += "d";
-                        break;
-                    case 'J':
-                        command += "j";
-                        break;
-                    case 'K':
-                        command += "k";
-                        break;
-                    case 'L':
-                        command += "l";
-                        break;
-                    case 'I':
-                        command += "i";
-                        break;
-                    default:
-                        break;
+                case 'Z':
+                    command += "z";
+                    break;
+                case 'Q':
+                    command += "q";
+                    break;
+                case 'S':
+                    command += "s";
+                    break;
+                case 'D':
+                    command += "d";
+                    break;
+                case 'J':
+                    command += "j";
+                    break;
+                case 'K':
+                    command += "k";
+                    break;
+                case 'L':
+                    command += "l";
+                    break;
+                case 'I':
+                    command += "i";
+                    break;
+                default:
+                    break;
                 }
 
                 sendto(socket_client, command.c_str(), command.size(), 0, (sockaddr*)&addrServer, sizeof(addrServer));
@@ -175,15 +184,15 @@ DWORD __stdcall GameManager::ClientThreadCommand(void* pParam)
         Sleep(16);  // Pour éviter une surcharge du processeur
     }
 
+    std::cout << "[Client] Thread commande terminé" << std::endl;
     return 0;
 }
 
-int GameManager::Init()
-{
-        std::cout << "Initialisation du client..." << std::endl;
+int GameManager::Init() {
+    std::cout << "Initialisation du client..." << std::endl;
 
     Sleep(1000);
-    std::cout << "Client demarre..." << std::endl;
+    std::cout << "Client démarré..." << std::endl;
 
     // Créer une fenêtre SFML
     window.create(sf::VideoMode(1200, 800), "Client: Connexion");
@@ -197,14 +206,13 @@ int GameManager::Init()
     // Création du socket UDP
     socket_client = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (socket_client == INVALID_SOCKET) {
-        std::cerr << "Erreur creation socket : " << WSAGetLastError() << std::endl;
+        std::cerr << "Erreur création socket : " << WSAGetLastError() << std::endl;
         return -2;
     }
 
     std::cout << "Socket créé avec succès" << std::endl;
 
     // Initialisation de la police de caractères
-    font;
     if (!font.loadFromFile("../../font/Poppins-Regular.ttf")) {
         std::cerr << "Impossible de charger la police" << std::endl;
         return -3;
@@ -216,25 +224,12 @@ int GameManager::Init()
     InitializeCriticalSection(&criticalSection);
     std::cout << "CriticalSection initialisée" << std::endl;
 
-    // Création des threads
-    threadNetwork = CreateThread(nullptr, 0, GameManager::StaticClientThreadNetwork, this, 0, nullptr);
-    threadCommand = CreateThread(nullptr, 0, GameManager::StaticClientThreadCommand, this, 0, nullptr);
-
-    if (threadNetwork == NULL || threadCommand == NULL) {
-        std::cerr << "Erreur lors de la création des threads" << std::endl;
-        return -4;
-    }
-
-    std::cout << "Threads créés avec succès" << std::endl;
-
     // Créer les labels avec un style moderne
     labelTop.setString("Pseudo:");
     labelTop.setFont(font);
     labelTop.setCharacterSize(35);
     labelTop.setPosition(100, 60);
     labelTop.setFillColor(sf::Color(255, 255, 255));  // Blanc
-
-    // Application d'une ombre portée pour un effet de profondeur
     labelTop.setOutlineColor(sf::Color(0, 0, 0));     // Ombre noire
     labelTop.setOutlineThickness(2);
 
@@ -297,12 +292,21 @@ int GameManager::Init()
 
     // Initialisation de la fenêtre
     window.setFramerateLimit(60);
+
+    // Création des threads
+    threadNetwork = CreateThread(nullptr, 0, StaticClientThreadNetwork, this, 0, nullptr);
+    threadCommand = CreateThread(nullptr, 0, StaticClientThreadCommand, this, 0, nullptr);
+
+    if (threadNetwork == NULL || threadCommand == NULL) {
+        std::cerr << "Erreur lors de la création des threads" << std::endl;
+        return -4;
+    }
+
+    return 0;
 }
 
-int GameManager::GameLoop()
-{
-    while (window.isOpen())
-    {
+int GameManager::GameLoop() {
+    while (window.isOpen()) {
         bool isWindowActive = window.hasFocus();
 
         // Gérer les événements SFML
@@ -310,18 +314,12 @@ int GameManager::GameLoop()
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-
             }
-            if (isWindowActive)
-            {
-                if (isConnected)
-                {
+            if (isWindowActive) {
+                if (isConnected) {
                     mInputManager.update();
-
                     continue;
                 }
-
-
                 else if (event.type == sf::Event::MouseButtonPressed) {
                     // Vérifier où l'utilisateur clique
                     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -406,16 +404,13 @@ int GameManager::GameLoop()
             }
         }
 
-        if (isConnected)
-        {
+        if (isConnected) {
             window.clear(sf::Color::Black);
 
             mMap.Render(window);
-           // mPseudo.Render(window);
+            // mPseudo.Render(window);
         }
-
-        else
-        {
+        else {
             // Mettre à jour le texte affiché dans les zones
             textTop.setString(inputTextTop);
             textMid.setString(inputTextMid);
@@ -446,7 +441,6 @@ int GameManager::GameLoop()
     return 0;
 }
 
-void GameManager::Uninit()
-{
+void GameManager::Uninit() {
     DeleteCriticalSection(&criticalSection);
 }

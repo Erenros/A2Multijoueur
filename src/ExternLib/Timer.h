@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TIMER_H__
+#define TIMER_H__
+
 #include <Windows.h>
 #define FIXED_DT 0.01667f
 
@@ -28,3 +30,4 @@ public:
 	float GetAccumulatedTime() const;
 };
 
+#endif

@@ -22,23 +22,22 @@
 
 class GameManager {
 public:
-
     GameManager();
+    ~GameManager();
 
     void ParsePlayerData(const std::string& message, Player& player);
 
     static DWORD WINAPI StaticClientThreadNetwork(void* pParam);
     static DWORD WINAPI StaticClientThreadCommand(void* pParam);
 
-    DWORD WINAPI ClientThreadNetwork(void* pParam);
-    DWORD WINAPI ClientThreadCommand(void* pParam);
+    DWORD WINAPI ClientThreadNetwork();
+    DWORD WINAPI ClientThreadCommand();
 
     int Init();
     int GameLoop();
     void Uninit();
 
 protected:
-
     InputManager mInputManager;
 
     SpriteClass mPlayerSprite;
@@ -89,7 +88,7 @@ protected:
 
     UIManager connectButton;
 
-    bool bRunning;
+    bool bRunning = true;
     bool isConnected = false;
 
     Map mMap;
@@ -102,21 +101,8 @@ protected:
 
     CRITICAL_SECTION criticalSection;
 
-    HANDLE threadNetwork;
-    HANDLE threadCommand;
-
-
-    //sf::Font mFont;
-    //sf::Text mScoreText;      // Texte pour afficher le score
-
-private:
-    struct ClientThreadParams {
-        bool* isRunning;
-        Player* player;
-        InputManager* inputManager;
-        std::string* pseudo;
-        CRITICAL_SECTION* criticalSection;
-    };
+    HANDLE threadNetwork = nullptr;
+    HANDLE threadCommand = nullptr;
 };
 
 #endif

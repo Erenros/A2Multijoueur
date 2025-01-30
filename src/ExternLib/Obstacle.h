@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBSTACLE_H__
+#define OBSTACLE_H__
 
 #include "Vector2.h"
 #include "Entity.h"
@@ -25,3 +26,4 @@ public:
 	
 };
 
+#endif

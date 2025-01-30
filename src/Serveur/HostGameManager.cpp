@@ -85,10 +85,12 @@ DWORD __stdcall GameManager::ServerThreadNetwork(void* pParam)
                         response << "Initialisation Player: (" << player->GetPosition().GetX() << ", "
                             << player->GetPosition().GetY() << ", " << player->GetSpeed() << ", "
                             << player->GetSize().GetX() << ", " << player->GetSize().GetY() << ", "
-                            << player->GetHp();
+                            << player->GetHp() << ")";
                         const std::string strResponse = response.str();
                         const char* responseCstr = strResponse.c_str();
                         sendto(server_UDP, responseCstr, strlen(responseCstr), 0, (sockaddr*)&from, fromlen);
+                        std::cout << "[Serveur] Envoi de la réponse au client : " << strResponse << std::endl;
+
                     }
                     LeaveCriticalSection(&criticalSection);
                 }

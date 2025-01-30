@@ -2,41 +2,39 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player() : pSpritePlayer(nullptr), pData(nullptr), mSpeed(20.0f), mSize(Vector2()), mPosition(Vector2()), pInputPlayer(nullptr)
-{
+Player::Player() : pSpritePlayer(nullptr), pData(nullptr), mSpeed(20.0f), pInputPlayer(nullptr) {
+    // Initialisation par défaut
 }
 
-Player::~Player()
-{
+Player::~Player() {
+    Uninit();
 }
 
-void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector2& _Size, const Vector2& _Position, float _Speed, int _Hp)
-{
-
+void Player::Init(SpriteClass* _Sprite, InputManager* _InputPlayer, const Vector2& _Size, const Vector2& _Position, float _Speed, int _Hp) {
     pInputPlayer = _InputPlayer;
-    this->pSpritePlayer = _Sprite;
+    pSpritePlayer = _Sprite;
 
-    sf::Vector2u textureSize = pSpritePlayer->GetSprite().getTexture()->getSize();
-    Vector2 size;
-    size.Init(static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
-    SetSize(size);
-
-    if (!pData) {
-        std::cout << "Resource reinitialized with value: " << "\n";
-    }
-
+    // Initialiser la taille et la position
     SetSize(_Size);
     SetPosition(_Position);
     SetSpeed(_Speed);
 
-    /*SpritePlayer->GetSprite().setScale(
-        _Size.GetX() / SpritePlayer->GetTexture().getSize().x,
-        _Size.GetY() / SpritePlayer->GetTexture().getSize().y
-    );*/
+    // Initialiser la texture du sprite
+    if (pSpritePlayer && pSpritePlayer->GetSprite().getTexture()) {
+        sf::Vector2u textureSize = pSpritePlayer->GetSprite().getTexture()->getSize();
+        Vector2 size;
+        size.Init(static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
+        SetSize(size);
+    }
+
+    // Initialiser les données supplémentaires
+    if (!pData) {
+        pData = new int(0); // Exemple d'initialisation
+        std::cout << "Resource initialized with value: " << *pData << "\n";
+    }
 }
 
-void Player::Uninit()
-{
+void Player::Uninit() {
     if (pData) {
         std::cout << "Resource uninitialized, value was: " << *pData << "\n";
         delete pData;
@@ -44,8 +42,7 @@ void Player::Uninit()
     }
 }
 
-void Player::Move(float _WindowWidth, float _WindowHeight)
-{
+void Player::Move(float _WindowWidth, float _WindowHeight) {
     float PlayerSpeed = this->GetSpeed();
     Vector2 CurrentPosition = this->GetPosition();
     Vector2 PlayerSize = this->GetSize();
@@ -69,12 +66,10 @@ void Player::Move(float _WindowWidth, float _WindowHeight)
     this->SetPosition(CurrentPosition);
 }
 
-void Player::SetSprite(SpriteClass* _Sprite)
-{
+void Player::SetSprite(SpriteClass* _Sprite) {
     pSpritePlayer = _Sprite;
 }
 
-SpriteClass* Player::GetSprite()
-{
+SpriteClass* Player::GetSprite() {
     return pSpritePlayer;
 }

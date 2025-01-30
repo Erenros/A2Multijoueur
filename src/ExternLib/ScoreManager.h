@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef SCOREMANAGER_H__
+#define SCOREMANAGER_H__
 
 class ScoreManager
 {
@@ -19,3 +19,4 @@ public:
 	int GetScore();
 };
 
+#endif
