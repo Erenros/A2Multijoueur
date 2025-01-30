@@ -20,12 +20,23 @@ DWORD WINAPI GameManager::StaticServerThreadGame(void* pParam)
 
 DWORD __stdcall GameManager::ServerThreadNetwork(void* pParam)
 {
+    std::cout << "[Serveur] Début du thread réseau" << std::endl;
+
+    if (!pParam) {
+        std::cerr << "[ERREUR] pParam est NULL ! Le thread ne peut pas démarrer." << std::endl;
+        return 0;
+    }
+
+    bool* isRunning = (bool*)pParam;
+    std::cout << "[DEBUG] Valeur de isRunning avant la boucle : " << *isRunning << std::endl;
+
     sockaddr_in from;
     socklen_t fromlen = sizeof(from);
     char buffer[4096];
     int ret;
 
     while (*(bool*)pParam) {
+        std::cout << "[Serveur] En attente de messages..." << std::endl;
         ret = recvfrom(server_UDP, buffer, sizeof(buffer), 0, (sockaddr*)&from, &fromlen);
         if (ret > 0) {
             buffer[ret] = '\0'; // Null terminate the message
@@ -172,12 +183,15 @@ int GameManager::Init()
         std::cerr << "Erreur bind : " << WSAGetLastError() << std::endl;
         return -3;
     }
+    else {
+        std::cout << "[Serveur] Bind réussi sur 0.0.0.0:" << port << std::endl;
+    }
 
-    bool running = true;
+    isRunning = true;
     InitializeCriticalSection(&criticalSection);
 
-    HANDLE threadNetwork = CreateThread(nullptr, 0, StaticServerThreadNetwork, this, 0, nullptr);
-    HANDLE threadGame = CreateThread(nullptr, 0, StaticServerThreadGame, this, 0, nullptr);
+    HANDLE threadNetwork = CreateThread(nullptr, 0, StaticServerThreadNetwork, &isRunning, 0, nullptr);
+    HANDLE threadGame = CreateThread(nullptr, 0, StaticServerThreadGame, &isRunning, 0, nullptr);
 
     // Attend la fin des threads
     WaitForSingleObject(threadNetwork, INFINITE);

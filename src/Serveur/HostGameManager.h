@@ -36,6 +36,8 @@ public:
 
 protected:
 
+    bool isRunning = true;
+
     InputManager mInputManager;
 
     SpriteClass mPlayerSprite;
