@@ -73,3 +73,14 @@ void Player::SetSprite(SpriteClass* _Sprite) {
 SpriteClass* Player::GetSprite() {
     return pSpritePlayer;
 }
+
+void Player::Render(sf::RenderWindow& window, const sf::Transform& transform) {
+    if (pSpritePlayer) {
+        // Mettre à jour la position du sprite
+        pSpritePlayer->GetSprite().setPosition(GetPosition().GetX(), GetPosition().GetY());
+        // Dessiner le sprite avec la transformation
+        window.draw(pSpritePlayer->GetSprite(), transform);
+    } else {
+        std::cerr << "Erreur : pSpritePlayer est null !" << std::endl;
+    }
+}

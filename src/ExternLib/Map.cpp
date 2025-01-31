@@ -6,9 +6,12 @@ Map::Map() : mViewArea(0.f, 0.f, 800.f, 600.f), mPlayerPosition(400.f, 300.f) {}
 Map::~Map() {}
 
 void Map::Init(int _width, int _height, const std::string& title) {
-    // Pas besoin de définir une vue, juste gérer la taille de la fenêtre dans le main
-    mViewArea.width = 800.f;  // Taille de la zone de vue
-    mViewArea.height = 600.f;
+    // Configurer les dimensions de la carte
+    mViewArea.width = static_cast<float>(_width);
+    mViewArea.height = static_cast<float>(_height);
+
+    // Configurer le titre de la carte (optionnel)
+    std::cout << "Carte initialisée : " << title << std::endl;
 }
 
 void Map::Draw(sf::RenderWindow& _Window) {
@@ -18,12 +21,13 @@ void Map::Draw(sf::RenderWindow& _Window) {
     sf::Transform transform;
     transform.translate(-mPlayerPosition.x + mViewArea.width / 2.f, -mPlayerPosition.y + mViewArea.height / 2.f);
 
-    // Appliquer la transformation et dessiner les éléments
-    //_Window.setView(sf::View(mPlayerPosition, sf::Vector2f(mViewArea.width, mViewArea.height)));
-    // Dessiner ici les éléments de la carte (obstacles, ennemis, etc.)
-    // _Window.draw(...);
-
-    //_Window.display();
+    // Dessiner la carte avec la transformation
+    if (mSpriteMap) {
+        _Window.draw(mSpriteMap->GetSprite(), transform);
+    }
+    else {
+        std::cerr << "Erreur : mSpriteMap est null !" << std::endl;
+    }
 }
 
 void Map::UpdateCamera(const sf::Vector2f& playerPosition, float width, float height) {
@@ -48,22 +52,24 @@ void Map::UpdateCamera(const sf::Vector2f& playerPosition, float width, float he
         mPlayerPosition.y = mapHeight - halfHeight;
 }
 
-void Map::setPosition(const Vector2& position)
-{
+void Map::setPosition(const Vector2& position) {
     mMapShape.setPosition(position.ToSFMLVectorF());
 }
 
-void Map::SetSprite(SpriteClass* _Sprite)
-{
+void Map::SetSprite(SpriteClass* _Sprite) {
     mSpriteMap = _Sprite;
 }
 
-SpriteClass* Map::GetSprite()
-{
+SpriteClass* Map::GetSprite() {
     return mSpriteMap;
 }
 
-void Map::Render(sf::RenderWindow& window)
-{
-    window.draw(mSpriteMap->GetSprite());
+void Map::Render(sf::RenderWindow& window, const sf::Transform& transform) {
+    if (mSpriteMap) {
+        // Dessiner la carte avec la transformation
+        window.draw(mSpriteMap->GetSprite(), transform);
+    }
+    else {
+        std::cerr << "Erreur : mSpriteMap est null !" << std::endl;
+    }
 }

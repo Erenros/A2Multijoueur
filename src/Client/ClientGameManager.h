@@ -42,8 +42,10 @@ protected:
 
     SpriteClass mPlayerSprite;
     SpriteClass mObstacleSprite;
+    SpriteClass mMapSprite;  // Sprite pour la carte
 
     sf::Texture obstacleTexture;
+    sf::Texture mapTexture;  // Texture pour la carte
     std::string obstacleTexturePath;
 
     Obstacle obstacle;
@@ -78,6 +80,7 @@ protected:
     sf::Font font;
 
     sf::RenderWindow window;
+    sf::RenderWindow gameWindow;
 
     bool isInTopArea = false;
     bool isInMidArea = false;

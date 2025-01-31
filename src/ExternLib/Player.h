@@ -27,6 +27,8 @@ public:
 
     void SetSprite(SpriteClass* _Sprite);
     SpriteClass* GetSprite();
+
+    void Render(sf::RenderWindow& window, const sf::Transform& transform);
 };
 
 #endif
