@@ -17,7 +17,7 @@
 #include "Vector2.h"
 
 #include <iostream>
-#include <filesystem> // Pour gérer les chemins dynamiquement
+#include <filesystem>
 
 class GameManager {
 public:
@@ -66,9 +66,6 @@ protected:
     sockaddr_in addr;
 
     CRITICAL_SECTION criticalSection;
-
-    //sf::Font mFont;
-    //sf::Text mScoreText;      // Texte pour afficher le score
 
 private:
     

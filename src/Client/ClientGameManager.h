@@ -18,7 +18,7 @@
 #include "Vector2.h"
 
 #include <iostream>
-#include <filesystem> // Pour gérer les chemins dynamiquement
+#include <filesystem>
 
 class GameManager {
 public:
@@ -42,14 +42,14 @@ protected:
 
     SpriteClass mPlayerSprite;
     SpriteClass mObstacleSprite;
-    SpriteClass mMapSprite;  // Sprite pour la carte
+    SpriteClass mMapSprite;
 
-    sf::Texture obstacleTexture;
-    sf::Texture mapTexture;  // Texture pour la carte
-    std::string obstacleTexturePath;
+    sf::Texture mObstacleTexture;
+    sf::Texture mMapTexture;
+    std::string mObstacleTexturePath;
 
-    Obstacle obstacle;
-    Vector2 positionObstacle;
+    Obstacle mObstacle;
+    Vector2 mPositionObstacle;
 
     std::map<std::string, Player*> pPlayers;
     std::map<std::string, Obstacle> pObstacles;
@@ -62,17 +62,14 @@ protected:
     std::string inputTextMid = "";
     std::string inputTextBottom = "";
 
-    // Déclaration des labels
     sf::Text labelTop;
     sf::Text labelMid;
     sf::Text labelBottom;
 
-    // Déclaration des zones de saisie
     sf::RectangleShape inputAreaTop;
     sf::RectangleShape inputAreaMid;
     sf::RectangleShape inputAreaBottom;
 
-    // Déclaration des zones de texte
     sf::Text textTop;
     sf::Text textMid;
     sf::Text textBottom;

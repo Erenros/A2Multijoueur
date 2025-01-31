@@ -4,16 +4,16 @@
 InputManager::InputManager() {
     // Initialisation des touches A-Z
     for (char c = 'A'; c <= 'Z'; ++c) {
-        keyStates[c] = None;  // Initialiser l'état de chaque touche à "None"
+        mKeyStates[c] = None;  // Initialiser l'état de chaque touche à "None"
     }
 
-    mouseStates[VK_LBUTTON] = None;  // Clic gauche
-    mouseStates[VK_RBUTTON] = None;  // Clic droit
+    mMouseStates[VK_LBUTTON] = None;  // Clic gauche
+    mMouseStates[VK_RBUTTON] = None;  // Clic droit
 }
 
 void InputManager::update() {
     // Mettre à jour les états des touches
-    for (auto it = keyStates.begin(); it != keyStates.end(); ++it) {
+    for (auto it = mKeyStates.begin(); it != mKeyStates.end(); ++it) {
         int key = it->first;        // Clé (code de la touche)
         KeyState& state = it->second;  // État de la touche
 
@@ -34,7 +34,7 @@ void InputManager::update() {
     }
 
     // Mettre à jour l'état des boutons de la souris (clic gauche et droit)
-    for (auto it = mouseStates.begin(); it != mouseStates.end(); ++it) {
+    for (auto it = mMouseStates.begin(); it != mMouseStates.end(); ++it) {
         int button = it->first;
         KeyState& state = it->second;
 
@@ -56,15 +56,15 @@ void InputManager::update() {
 }
 
 KeyState InputManager::getKeyState(int key) const {
-    auto it = keyStates.find(key);
-    if (it != keyStates.end())
+    auto it = mKeyStates.find(key);
+    if (it != mKeyStates.end())
         return it->second;
     return None;
 }
 
 KeyState InputManager::getMouseState(int button) const {
-    auto it = mouseStates.find(button);
-    if (it != mouseStates.end())
+    auto it = mMouseStates.find(button);
+    if (it != mMouseStates.end())
         return it->second;
     return None;
 }

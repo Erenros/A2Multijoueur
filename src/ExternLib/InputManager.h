@@ -13,8 +13,8 @@ enum KeyState {
 
 class InputManager {
 private:
-    std::unordered_map<int, KeyState> keyStates;  // Remplacer sf::Keyboard::Key par int (VK_*)
-    std::unordered_map<int, KeyState> mouseStates; // Ajouter un map pour les boutons de la souris
+    std::unordered_map<int, KeyState> mKeyStates;  // Remplacer sf::Keyboard::Key par int (VK_*)
+    std::unordered_map<int, KeyState> mMouseStates;
 
 public:
     InputManager();

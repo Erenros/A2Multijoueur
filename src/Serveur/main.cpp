@@ -97,6 +97,7 @@
 //    Map map;
 //    map.Init(1260, 800, "Game Map");
 //
+//    // Dans la boucle principale
 //    while (window.isOpen()) {
 //        sf::Event event;
 //        while (window.pollEvent(event)) {
@@ -124,24 +125,21 @@
 //        // Effacer l'écran
 //        window.clear();
 //
-//        // Appliquer la transformation pour simuler la caméra
-//        sf::Transform transform;
-//        transform.translate(-player.GetPosition().GetX() + windowWidth / 2.f, -player.GetPosition().GetY() + windowHeight / 2.f);
+//        // Appliquer le décalage de la caméra aux positions des objets
+//        sf::Vector2f playerPosition = map.ApplyCameraOffset(sf::Vector2f(player.GetPosition().GetX(), player.GetPosition().GetY()));
+//        sf::Vector2f obstaclePosition = map.ApplyCameraOffset(sf::Vector2f(positionObstacle.GetX(), positionObstacle.GetY()));
 //
 //        // Dessiner les objets principaux dans la fenêtre principale
 //        sf::Sprite& sprite = player.GetSprite()->GetSprite();
-//        sprite.setPosition(player.GetPosition().GetX(), player.GetPosition().GetY());
-//        window.draw(sprite, transform);  // Appliquer la transformation au joueur
+//        sprite.setPosition(playerPosition.x, playerPosition.y);
+//        window.draw(sprite);  // Dessiner le joueur
 //
-//        // Dessiner l'obstacle avec transformation
+//        // Dessiner l'obstacle avec le décalage de la caméra
 //        sf::Sprite obstacleSfSprite = obstacle.GetSfSprite();
-//        obstacleSfSprite.setPosition(positionObstacle.GetX(), positionObstacle.GetY());
-//        window.draw(obstacleSfSprite, transform);  // Appliquer la transformation à l'obstacle
+//        obstacleSfSprite.setPosition(obstaclePosition.x, obstaclePosition.y);
+//        window.draw(obstacleSfSprite);  // Dessiner l'obstacle
 //
 //        window.display();  // Afficher la scène principale
-//
-//        // Dessiner la carte dans la fenêtre dédiée à la carte
-//        map.Draw(window);
 //    }
 //
 //

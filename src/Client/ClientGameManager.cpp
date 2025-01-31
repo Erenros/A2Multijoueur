@@ -1,16 +1,11 @@
 #include "pch.h"
 #include "ClientGameManager.h"
-#include <filesystem>  // Pour gérer les chemins de fichiers
 
 GameManager::GameManager() : bRunning(true), isConnected(false) {
     InitializeCriticalSection(&criticalSection);
 
-    // Chemin de base pour les ressources
-    basePath = std::filesystem::current_path().parent_path().parent_path().string();
-
-    // Charger la texture de la carte
-    std::string mapTexturePath = basePath + "/sprite/Map.png";  // Chemin vers la texture de la carte
-    if (!mapTexture.loadFromFile(mapTexturePath)) {
+    std::string mMapTexturePath = basePath + "/sprite/Map.png";
+    if (!mMapTexture.loadFromFile(mMapTexturePath)) {
         std::cerr << "Erreur : Impossible de charger la texture de la carte !" << std::endl;
     }
     else {
@@ -18,8 +13,8 @@ GameManager::GameManager() : bRunning(true), isConnected(false) {
     }
 
     // Initialiser le sprite de la carte
-    mMapSprite.GetSprite().setTexture(mapTexture);  // Appliquer la texture à la carte
-    mMap.SetSprite(&mMapSprite);  // Assigner le sprite à la carte
+    mMapSprite.GetSprite().setTexture(mMapTexture);
+    mMap.SetSprite(&mMapSprite);
 }
 
 GameManager::~GameManager() {
@@ -50,7 +45,6 @@ void GameManager::ParsePlayerData(const std::string& message, Player& player) {
             mSize.Init(mSizeX, mSizeY);
             mPos.Init(mPosX, mPosY);
 
-            // Charger la texture du joueur
             std::string playerTexturePath = basePath + "/sprite/Soldier.png";
             sf::Texture playerTexture;
             if (!playerTexture.loadFromFile(playerTexturePath)) {
@@ -58,10 +52,8 @@ void GameManager::ParsePlayerData(const std::string& message, Player& player) {
                 return;
             }
 
-            // Appliquer la texture au sprite du joueur
             mPlayerSprite.GetSprite().setTexture(playerTexture);
 
-            // Initialiser le joueur
             player.Init(&mPlayerSprite, &mInputManager, mSize, mPos, mSpeed, mHp);
 
             std::cout << "Joueur initialisé à la position : X=" << mPosX << ", Y=" << mPosY << std::endl;
@@ -107,7 +99,7 @@ DWORD WINAPI GameManager::ClientThreadNetwork() {
                 }
 
                 ParsePlayerData(message, *pPlayers[mPseudo]);
-                isConnected = true;  // Marquer comme connecté
+                isConnected = true;
 
                 LeaveCriticalSection(&criticalSection);
             }

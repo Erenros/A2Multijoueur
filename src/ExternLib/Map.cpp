@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Map.h"
 
-Map::Map() : mViewArea(0.f, 0.f, 800.f, 600.f), mPlayerPosition(400.f, 300.f) {}
+Map::Map() : mViewArea(0.f, 0.f, 800.f, 600.f), mPlayerPosition(400.f, 300.f), mCameraOffset(0.f, 0.f) {}
 
 Map::~Map() {}
 
@@ -34,8 +34,8 @@ void Map::UpdateCamera(const sf::Vector2f& playerPosition, float width, float he
     mPlayerPosition = playerPosition;
 
     // Appliquer les limites de la carte (en pixels)
-    float mapWidth = 2000.f;  // Largeur de la carte
-    float mapHeight = 2000.f;  // Hauteur de la carte
+    float mapWidth = 2000.f;
+    float mapHeight = 2000.f;
 
     float halfWidth = width / 2.f;
     float halfHeight = height / 2.f;
@@ -50,6 +50,15 @@ void Map::UpdateCamera(const sf::Vector2f& playerPosition, float width, float he
         mPlayerPosition.y = halfHeight;
     if (mPlayerPosition.y + halfHeight > mapHeight)
         mPlayerPosition.y = mapHeight - halfHeight;
+
+    // Calculer le décalage de la caméra
+    mCameraOffset.x = mPlayerPosition.x - width / 2.f;
+    mCameraOffset.y = mPlayerPosition.y - height / 2.f;
+}
+
+sf::Vector2f Map::ApplyCameraOffset(const sf::Vector2f& position) {
+    // Appliquer le décalage de la caméra à la position donnée
+    return sf::Vector2f(position.x - mCameraOffset.x, position.y - mCameraOffset.y);
 }
 
 void Map::setPosition(const Vector2& position) {
